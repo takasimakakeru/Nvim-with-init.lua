@@ -15,3 +15,5 @@ vim.g.maplocalleader = " "
 -- 3. 外部設定ファイルの読み込み
 require("config.lazy")
 require("config.lsp")
+
+vim.opt.number = true
