@@ -1,5 +1,6 @@
 require('lazy').setup({
-  { 'romgrk/barbar.nvim',
+  {
+    'romgrk/barbar.nvim',
     dependencies = {
       'lewis6991/gitsigns.nvim',
       'nvim-tree/nvim-web-devicons',
@@ -11,9 +12,18 @@ require('lazy').setup({
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = true 
+    config = true
   },
-  {
+{
+  "monkoose/neocodeium",
+  event = "VeryLazy",
+  config = function()
+    local neocodeium = require("neocodeium")
+    neocodeium.setup()
+    vim.keymap.set("i", "<A-f>", neocodeium.accept)
+  end,
+},
+   {
     "nvim-tree/nvim-tree.lua",
     version = "*",
     lazy = false,
@@ -45,10 +55,10 @@ require('lazy').setup({
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     }
   },
-  {
-    "github/copilot.vim",
-    lazy = false,
-  },
+  --{
+--  "github/copilot.vim",
+--    lazy = false,
+--  },
   {
     "folke/tokyonight.nvim",
     lazy = false,    -- 後回しにせず、起動時にすぐ読み込む
@@ -110,44 +120,45 @@ require('lazy').setup({
       "rcarriga/nvim-notify",
       }
   },
-{
-  "hrsh7th/nvim-cmp",
-  dependencies = {
-    "hrsh7th/cmp-nvim-lsp",     -- LSPからの補完候補
-    "hrsh7th/cmp-buffer",       -- バッファ内の単語補完
-    "hrsh7th/cmp-path",         -- ファイルパスの補完
-    "L3MON4D3/LuaSnip",         -- スニペットエンジン（必須）
-    "saadparwaiz1/cmp_luasnip", -- スニペットをcmpと紐付ける
-  },
-  config = function()
-    local cmp = require("cmp")
-    local luasnip = require("luasnip")
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",     -- LSPからの補完候補
+      "hrsh7th/cmp-buffer",       -- バッファ内の単語補完
+      "hrsh7th/cmp-path",         -- ファイルパスの補完
+      "L3MON4D3/LuaSnip",         -- スニペットエンジン（必須）
+      "saadparwaiz1/cmp_luasnip", -- スニペットをcmpと紐付ける
+    },
+    config = function()
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
 
-    cmp.setup({
-      snippet = {
-        expand = function(args)
-          luasnip.lsp_expand(args.body)
-        end,
-      },
-      mapping = cmp.mapping.preset.insert({
-        ["<C-p>"] = cmp.mapping.select_prev_item(),
-        ["<C-n>"] = cmp.mapping.select_next_item(),
-        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({ select = true }),
-      }),
-      sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-      }, {
-        { name = "buffer" },
-        { name = "path" },
-      }),
-    })
-  end,
-},
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        }),
+        sources = cmp.config.sources({
+	  { name = "codeium" },
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+        }, {
+          { name = "buffer" },
+          { name = "path" },
+        }),
+      })
+    end,
+  },
   {
     "j-hui/fidget.nvim",
     opts = {
