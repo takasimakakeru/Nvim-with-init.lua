@@ -8,8 +8,14 @@ return {
     "mason-org/mason-lspconfig.nvim",
     dependencies = { "mason-org/mason.nvim" },
     opts = {
-      -- ここに書いた名前は自動でインストール & vim.lsp.enable() される
-      ensure_installed = { "lua_ls" },
+      ensure_installed = {
+        "lua_ls",
+        "html",       -- HTML
+        "cssls",      -- CSS
+        "ts_ls",      -- JavaScript / TypeScript / JSX / TSX
+        "pyright",    -- Python
+        "ruby_lsp",   -- Ruby
+      },
     },
   },
 }
