@@ -16,3 +16,5 @@ vim.g.maplocalleader = " "
 require("config.lazy")
 
 vim.opt.number = true
+
+require("luasnip.loaders.from_vscode").lazy_load()
