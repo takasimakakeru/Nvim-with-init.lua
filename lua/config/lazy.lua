@@ -64,18 +64,18 @@ require('lazy').setup({
 	--  "github/copilot.vim",
 	--    lazy = false,
 	--  },
-	{
-		"folke/tokyonight.nvim",
-		lazy = false, -- 後回しにせず、起動時にすぐ読み込む
-		priority = 1000, -- 他のプラグインより最優先で読み込む
-		config = function()
-			-- 24bitフルカラーを有効にする（超重要！）
-			vim.opt.termguicolors = true
-
+	--{
+	--	"folke/tokyonight.nvim",-
+	--	lazy = false, -- 後回しにせず、起動時にすぐ読み込む
+	--	priority = 1000, -- 他のプラグインより最優先で読み込む
+	--	config = function()
+	--		-- 24bitフルカラーを有効にする（超重要！）
+	--		vim.opt.termguicolors = truee
+	--
 			-- ここで実際にカラースキームを適用する
-			vim.cmd([[colorscheme tokyonight-night]])
-		end,
-	},
+	--		vim.cmd([[colorscheme tokyonight-night]])
+	--	end,
+	--},
 	{
 		"NeogitOrg/neogit",
 		lazy = true,
