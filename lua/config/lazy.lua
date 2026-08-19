@@ -20,6 +20,14 @@ require('lazy').setup({
 		end,
 	},
 	{
+		"rebelot/kanagawa.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			vim.cmd("colorscheme kanagawa-dragon")
+		end,
+	},
+	{
 		"nvim-tree/nvim-tree.lua",
 		version = "*",
 		lazy = false,
@@ -72,7 +80,7 @@ require('lazy').setup({
 	--		-- 24bitフルカラーを有効にする（超重要！）
 	--		vim.opt.termguicolors = truee
 	--
-			-- ここで実際にカラースキームを適用する
+	-- ここで実際にカラースキームを適用する
 	--		vim.cmd([[colorscheme tokyonight-night]])
 	--	end,
 	--},
