@@ -20,13 +20,34 @@ require('lazy').setup({
 		end,
 	},
 	{
-		"rebelot/kanagawa.nvim",
+		"neanias/everforest-nvim",
+		version = false,
 		lazy = false,
-		priority = 1000,
+		priority = 1000, -- make sure to load this before all the other start plugins
+		-- Optional; default configuration will be used if setup isn't called.
 		config = function()
-			vim.cmd("colorscheme kanagawa-dragon")
+			require("everforest").setup({
+				-- Your config here
+				background = 'soft',
+			})
+			vim.cmd([[colorscheme everforest]])
 		end,
 	},
+	--{
+	--	"rebelot/kanagawa.nvim",
+	--	lazy = false,
+	--	priority = 1000,
+	--	config = function()
+	--		vim.cmd("colorscheme kanagawa-dragon")
+	--	end,
+	--},
+	--{
+	--	"rose-pine/neovim",
+	--	name = "rose-pine",
+	--	config = function()
+	--		vim.cmd("colorscheme rose-pine-moon")
+	--	end
+	--},
 	{
 		"nvim-tree/nvim-tree.lua",
 		version = "*",
