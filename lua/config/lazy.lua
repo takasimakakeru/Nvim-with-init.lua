@@ -1,14 +1,4 @@
 require('lazy').setup({
-	{
-		'romgrk/barbar.nvim',
-		dependencies = {
-			'lewis6991/gitsigns.nvim',
-			'nvim-tree/nvim-web-devicons',
-		},
-		init = function() vim.g.barbar_auto_setup = false end,
-		opts = {},
-		version = '^1.0.0',
-	},
 	{ 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }, config = true },
 	{
 		"monkoose/neocodeium",
@@ -18,6 +8,33 @@ require('lazy').setup({
 			neocodeium.setup()
 			vim.keymap.set("i", "<A-f>", neocodeium.accept)
 		end,
+	},
+	{
+		'akinsho/bufferline.nvim',
+		version = "*",
+		dependencies = 'nvim-tree/nvim-web-devicons',
+		config = function()
+			require("bufferline").setup({
+				options = {
+					mode = "buffers",
+					diagnostics = "nvim_lsp",
+					always_show_bufferline = true,
+					offsets = {
+						{
+							filetype = "NvimTree",
+							text = "File Explorer",
+							text_align = "left",
+							separator = true
+						}
+					},
+				}
+			})
+
+			-- キーマップ設定
+			vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "前のバッファ" })
+			vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "次のバッファ" })
+			vim.keymap.set("n", "<leader>w", "<cmd>bdelete<CR>", { desc = "バッファを閉じる" })
+		end
 	},
 	{
 		"neanias/everforest-nvim",
