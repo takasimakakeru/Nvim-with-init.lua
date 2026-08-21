@@ -41,7 +41,6 @@ require('lazy').setup({
 		version = false,
 		lazy = false,
 		priority = 1000, -- make sure to load this before all the other start plugins
-		-- Optional; default configuration will be used if setup isn't called.
 		config = function()
 			require("everforest").setup({
 				-- Your config here
@@ -51,19 +50,21 @@ require('lazy').setup({
 		end,
 	},
 	--{
-	--	"rebelot/kanagawa.nvim",
-	--	lazy = false,
-	--	priority = 1000,
-	--	config = function()
-	--		vim.cmd("colorscheme kanagawa-dragon")
-	--	end,
-	--},
-	--{
 	--	"rose-pine/neovim",
 	--	name = "rose-pine",
 	--	config = function()
 	--		vim.cmd("colorscheme rose-pine-moon")
 	--	end
+	--},
+	--{
+	--	"folke/tokyonight.nvim",-
+	--	lazy = false, -- 後回しにせず、起動時にすぐ読み込む
+	--	priority = 1000, -- 他のプラグインより最優先で読み込む
+	--	config = function()
+	--		vim.opt.termguicolors = truee
+	--
+	--		vim.cmd([[colorscheme tokyonight-night]])
+	--	end,
 	--},
 	{
 		"nvim-tree/nvim-tree.lua",
@@ -84,6 +85,16 @@ require('lazy').setup({
 		config = function()
 			require("luasnip.loaders.from_lua").load()
 		end,
+	},
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+		},
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		}
 	},
 	{
 		'windwp/nvim-autopairs',
@@ -110,18 +121,6 @@ require('lazy').setup({
 	--  "github/copilot.vim",
 	--    lazy = false,
 	--  },
-	--{
-	--	"folke/tokyonight.nvim",-
-	--	lazy = false, -- 後回しにせず、起動時にすぐ読み込む
-	--	priority = 1000, -- 他のプラグインより最優先で読み込む
-	--	config = function()
-	--		-- 24bitフルカラーを有効にする（超重要！）
-	--		vim.opt.termguicolors = truee
-	--
-	-- ここで実際にカラースキームを適用する
-	--		vim.cmd([[colorscheme tokyonight-night]])
-	--	end,
-	--},
 	{
 		"NeogitOrg/neogit",
 		lazy = true,
@@ -155,21 +154,6 @@ require('lazy').setup({
 		'akinsho/toggleterm.nvim',
 		version = "*",
 		config = true
-	},
-	{
-		"folke/noice.nvim",
-		event = "VeryLazy",
-		opts = {
-			-- add any options here
-		},
-		dependencies = {
-			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-			"MunifTanjim/nui.nvim",
-			-- OPTIONAL:
-			--   `nvim-notify` is only needed, if you want to use the notification view.
-			--   If not available, we use `mini` as the fallback
-			"rcarriga/nvim-notify",
-		}
 	},
 	{
 		"hrsh7th/nvim-cmp",
