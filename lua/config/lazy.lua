@@ -49,23 +49,6 @@ require('lazy').setup({
 			vim.cmd([[colorscheme everforest]])
 		end,
 	},
-	--{
-	--	"rose-pine/neovim",
-	--	name = "rose-pine",
-	--	config = function()
-	--		vim.cmd("colorscheme rose-pine-moon")
-	--	end
-	--},
-	--{
-	--	"folke/tokyonight.nvim",-
-	--	lazy = false, -- 後回しにせず、起動時にすぐ読み込む
-	--	priority = 1000, -- 他のプラグインより最優先で読み込む
-	--	config = function()
-	--		vim.opt.termguicolors = truee
-	--
-	--		vim.cmd([[colorscheme tokyonight-night]])
-	--	end,
-	--},
 	{
 		"nvim-tree/nvim-tree.lua",
 		version = "*",
@@ -85,6 +68,15 @@ require('lazy').setup({
 		config = function()
 			require("luasnip.loaders.from_lua").load()
 		end,
+	},
+	{
+		'windwp/nvim-ts-autotag',
+		event = 'InsertEnter', -- インサートモードに入った時に読み込み（起動高速化）
+		opts = {
+			enable_close = true,
+			enable_rename = true,
+			enable_close_on_slash = true,
+		},
 	},
 	{
 		"folke/noice.nvim",
