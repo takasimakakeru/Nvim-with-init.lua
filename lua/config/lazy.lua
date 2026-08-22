@@ -1,14 +1,14 @@
 require('lazy').setup({
 	{ 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }, config = true },
-	{
-		"monkoose/neocodeium",
-		event = "VeryLazy",
-		config = function()
-			local neocodeium = require("neocodeium")
-			neocodeium.setup()
-			vim.keymap.set("i", "<A-f>", neocodeium.accept)
-		end,
-	},
+	--{
+	--	"monkoose/neocodeium",
+	--	event = "VeryLazy",
+	--	config = function()
+	--		local neocodeium = require("neocodeium")
+	--		neocodeium.setup()
+	--		vim.keymap.set("i", "<A-f>", neocodeium.accept)
+	--	end,
+	--},
 	{
 		'akinsho/bufferline.nvim',
 		version = "*",
@@ -62,21 +62,29 @@ require('lazy').setup({
 		end,
 	},
 	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		config = function()
+			require("copilot").setup({
+				suggestion = {
+					enabled = true,
+					auto_trigger = true,
+					keymap = {
+						accept = "<M-l>", -- Tabは他で使ってるので別キーにするのが安全
+					},
+				},
+				panel = { enabled = false }, -- パネルは使わないならこのままでOK
+				copilot_node_command = 'node'
+			})
+		end,
+	},
+	{
 		"L3MON4D3/LuaSnip",
 		version = "v2.*",
 		build = "make install_jsregexp",
 		config = function()
 			require("luasnip.loaders.from_lua").load()
 		end,
-	},
-	{
-		'windwp/nvim-ts-autotag',
-		event = 'InsertEnter', -- インサートモードに入った時に読み込み（起動高速化）
-		opts = {
-			enable_close = true,
-			enable_rename = true,
-			enable_close_on_slash = true,
-		},
 	},
 	{
 		"folke/noice.nvim",
@@ -89,9 +97,104 @@ require('lazy').setup({
 		}
 	},
 	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		branch = "main",
+		dependencies = {
+			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+		},
+		build = "make tiktoken", -- Only on MacOS or Linux
+		opts = {
+			debug = true, -- Enable debugging
+			show_help = "yes",
+			prompts = {
+				Explain = {
+					prompt = "/COPILOT_EXPLAIN コードを日本語で説明してください",
+					mapping = '<leader>ce',
+					description = "コードの説明をお願いする",
+				},
+				Review = {
+					prompt = '/COPILOT_REVIEW コードを日本語でレビューしてください。',
+					mapping = '<leader>cr',
+					description = "コードのレビューをお願いする",
+				},
+				Fix = {
+					prompt = "/COPILOT_FIX このコードには問題があります。バグを修正したコードを表示してください。説明は日本語でお願いします。",
+					mapping = '<leader>cf',
+					description = "コードの修正をお願いする",
+				},
+				Optimize = {
+					prompt = "/COPILOT_REFACTOR 選択したコードを最適化し、パフォーマンスと可読性を向上させてください。説明は日本語でお願いします。",
+					mapping = '<leader>co',
+					description = "コードの最適化をお願いする",
+				},
+				Docs = {
+					prompt = "/COPILOT_GENERATE 選択したコードに関するドキュメントコメントを日本語で生成してください。",
+					mapping = '<leader>cd',
+					description = "コードのドキュメント作成をお願いする",
+				},
+				Tests = {
+					prompt = "/COPILOT_TESTS 選択したコードの詳細なユニットテストを書いてください。説明は日本語でお願いします。",
+					mapping = '<leader>ct',
+					description = "テストコード作成をお願いする",
+				},
+				FixDiagnostic = {
+					prompt = 'コードの診断結果に従って問題を修正してください。修正内容の説明は日本語でお願いします。',
+					mapping = '<leader>cD', -- Docsと重複していたため変更
+					description = "コードの修正をお願いする",
+					selection = function(source)
+						return require('CopilotChat.select').diagnostics(source)
+					end,
+				},
+				Commit = {
+					prompt =
+					'実装差分に対するコミットメッセージを日本語で記述してください。',
+					mapping = '<leader>cco',
+					description = "コミットメッセージの作成をお願いする",
+					selection = function(source)
+						return require('CopilotChat.select').gitdiff(source)
+					end,
+				},
+				CommitStaged = {
+					prompt =
+					'ステージ済みの変更に対するコミットメッセージを日本語で記述してください。',
+					mapping = '<leader>cs',
+					description = "ステージ済みのコミットメッセージの作成をお願いする",
+					selection = function(source)
+						return require('CopilotChat.select').gitdiff(source, true)
+					end,
+				},
+			},
+		},
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+				copilot_node_command = '/usr/sbin/node'
+			})
+		end,
+	},
+	{
+		"zbirenbaum/copilot-cmp",
+		config = function()
+			require("copilot_cmp").setup()
+		end
+	},
+	{
 		'windwp/nvim-autopairs',
 		event = "InsertEnter",
 		config = true
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
 	},
 	{
 		'Wansmer/treesj',
@@ -109,10 +212,10 @@ require('lazy').setup({
 			{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
 		}
 	},
-	--{
-	--  "github/copilot.vim",
-	--    lazy = false,
-	--  },
+	{
+		"github/copilot.vim",
+		lazy = false,
+	},
 	{
 		"NeogitOrg/neogit",
 		lazy = true,
@@ -210,6 +313,7 @@ require('lazy').setup({
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
+					{ name = 'copilot' },
 					{ name = "luasnip" },
 				}, {
 					{ name = "buffer" },
@@ -224,7 +328,7 @@ require('lazy').setup({
 			-- options
 		},
 	},
-	-- ★追加: ブログの構成（lua/plugins/）にあるプラグイン設定を自動で読み込む
+	-- ★追加: ブログの構成(lua/plugins/)にあるプラグイン設定を自動で読み込む
 	{ import = "plugins" }
 })
 
